@@ -1,9 +1,9 @@
-package printabc;
+package com.wzj.javalearning.multithread.printabc;
 
 import java.util.concurrent.Semaphore;
 
 /**
- * @Author 58
+ * @Author wzj
  * @Create time: 2018/06/10 17:36
  * @Description:Semaphore是用来保护一个或者多个共享资源的访问，Semaphore内部维护了一个计数器，其值为可以访问的共享资源的个数。 一个线程要访问共享资源，先获得信号量，如果信号量的计数器值大于1，意味着有共享资源可以访问，则使其计数器值减去1，再访问共享资源。
  * 如果计数器值为0,线程进入休眠。当某个线程使用完共享资源后，释放信号量，并将信号量内部的计数器加1，之前进入休眠的线程将被唤醒并再次试图获得信号量。

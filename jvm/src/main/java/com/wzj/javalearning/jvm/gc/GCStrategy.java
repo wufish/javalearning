@@ -1,13 +1,12 @@
-package gc;
+package com.wzj.javalearning.jvm.gc;
 
 /**
- * @Author 58
+ * @Author wzj
  * @Create time: 2018/06/09 14:34
  * @Description: VM 参数：-verbose:gc -Xms:20M -Xmx:20M -Xmn:10M -XX:+PrintGCDetails -XX:SurviorRation=8
  */
 public class GCStrategy {
     private static final int _1MB = 1024 * 1024;
-
     /**
      * 1. 新建对象优先放入新生代，当空间不足时，进行一次Minor GC
      */

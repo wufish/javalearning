@@ -1,7 +1,7 @@
-package printabc;
+package com.wzj.javalearning.multithread.printabc;
 
 /**
- * @Author 58
+ * @Author wzj
  * @Create time: 2018/06/10 16:48
  * @Description:建立三个线程A、B、C，A线程打印10次字母A，B线程打印10次字母B,C线程打印10次字母C， 但是要求三个线程同时运行，并且实现交替打印，即按照ABCABCABC的顺序打印。
  */

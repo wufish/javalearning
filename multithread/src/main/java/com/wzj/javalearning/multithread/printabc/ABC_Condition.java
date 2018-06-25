@@ -1,11 +1,11 @@
-package printabc;
+package com.wzj.javalearning.multithread.printabc;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * @Author 58
+ * @Author wzj
  * @Create time: 2018/06/10 17:30
  * @Description:
  */
