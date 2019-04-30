@@ -10,10 +10,11 @@ import com.google.inject.name.Names;
 import java.util.Properties;
 
 /**
+ * The type Constant inject demo.
+ *
  * @Author wzj
- * @Create time: 2018/06/24 17:45
- * @Description: 1.绑定基本类型外
- * 2. 绑定Properties 还可以绑定一个Properties到Guice中，当然了，由于Properties本质上时一个Map<String,String>， 因此Guice也允许绑定一个Map<String,String>。
+ * @Create time : 2018/06/24 17:45
+ * @Description: 1.绑定基本类型外  2. 绑定Properties 还可以绑定一个Properties到Guice中，当然了，由于Properties本质上时一个Map<String,String>， 因此Guice也允许绑定一个Map<String,String>。
  */
 public class ConstantInjectDemo {
     /**
@@ -43,6 +44,11 @@ public class ConstantInjectDemo {
     @Named("csdn")
     private String csdn;
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
         ConstantInjectDemo instance = Guice.createInjector(new Module() {
 
