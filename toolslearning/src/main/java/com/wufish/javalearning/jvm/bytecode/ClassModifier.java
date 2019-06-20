@@ -1,8 +1,10 @@
 package com.wufish.javalearning.jvm.bytecode;
 
 /**
+ * The type Class modifier.
+ *
  * @Author wzj
- * @Create time: 2018/07/03 14:18
+ * @Create time : 2018/07/03 14:18
  * @Description: 修改Class文件
  */
 public class ClassModifier {
@@ -24,15 +26,21 @@ public class ClassModifier {
     private static final int u2 = 2;
     private byte[] classByte;
 
+    /**
+     * Instantiates a new Class modifier.
+     *
+     * @param classByte the class byte
+     */
     public ClassModifier(byte[] classByte) {
         this.classByte = classByte;
     }
 
     /**
      * 修改常量池中的内容
-     * @param oldStr
-     * @param newStr
-     * @return
+     *
+     * @param oldStr the old str
+     * @param newStr the new str
+     * @return byte [ ]
      */
     public byte[] modifyUTF8Constant(String oldStr, String newStr) {
         // 常量池大小
@@ -65,7 +73,7 @@ public class ClassModifier {
     /**
      * 获取常量池中常量的数量
      *
-     * @return
+     * @return constant poll count
      */
     public int getConstantPollCount() {
         return ByteUtils.bytes2Int(classByte, CONSTANT_POLL_COUNT_INDEX, u2);

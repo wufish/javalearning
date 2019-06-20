@@ -8,40 +8,89 @@ import java.util.Properties;
 import java.util.PropertyPermission;
 
 /**
+ * The type Hack system.
+ *
  * @Author wzj
- * @Create time: 2018/07/03 14:17
+ * @Create time : 2018/07/03 14:17
  * @Description:
  */
 public class HackSystem {
+    /**
+     * The constant in.
+     */
     public static final InputStream in = System.in;
     private static ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+    /**
+     * The constant out.
+     */
     public static final PrintStream out = new PrintStream(buffer);
+    /**
+     * The constant err.
+     */
     public static final PrintStream err = out;
 
+    /**
+     * Gets buffer string.
+     *
+     * @return the buffer string
+     */
     public static String getBufferString() {
         return buffer.toString();
     }
 
+    /**
+     * Clear buffer.
+     */
     public static void clearBuffer() {
         buffer.reset();
     }
 
+    /**
+     * Sets security manager.
+     *
+     * @param securityManager the security manager
+     */
     public static void setSecurityManager(final SecurityManager securityManager) {
         System.setSecurityManager(securityManager);
     }
 
+    /**
+     * Gets security manager.
+     *
+     * @return the security manager
+     */
     public static SecurityManager getSecurityManager() {
         return getSecurityManager();
     }
 
+    /**
+     * Current time mills long.
+     *
+     * @return the long
+     */
     public static long currentTimeMills() {
         return System.currentTimeMillis();
     }
 
+    /**
+     * Array copy.
+     *
+     * @param src    the src
+     * @param srcPos the src pos
+     * @param dest   the dest
+     * @param desPos the des pos
+     * @param length the length
+     */
     public static void arrayCopy(Object src, int srcPos, Object dest, int desPos, int length) {
         System.arraycopy(src, srcPos, dest, desPos, length);
     }
 
+    /**
+     * Identity hash code int.
+     *
+     * @param x the x
+     * @return the int
+     */
     public static int identityHashCode(Object x) {
         return System.identityHashCode(x);
     }
@@ -135,12 +184,10 @@ public class HackSystem {
      * {@link #getProperty(String)} operation.
      *
      * @return the system properties
-     * @throws SecurityException if a security manager exists and its
-     *                           <code>checkPropertiesAccess</code> method doesn't allow access
-     *                           to the system properties.
-     * @see #setProperties
+     * @throws SecurityException if a security manager exists and its                           <code>checkPropertiesAccess</code> method doesn't allow access                           to the system properties.
+     * @see #setProperties #setProperties
      * @see java.lang.SecurityException
-     * @see java.lang.SecurityManager#checkPropertiesAccess()
+     * @see java.lang.SecurityManager#checkPropertiesAccess() java.lang.SecurityManager#checkPropertiesAccess()
      * @see java.util.Properties
      */
     public static Properties getProperties() {
@@ -155,7 +202,7 @@ public class HackSystem {
     /**
      * Returns the system-dependent line separator string.  It always
      * returns the same value - the initial value of the {@linkplain
-     * #getProperty(String) system property} {@code line.separator}.
+     * #getProperty(String) system property}* {@code line.separator}.
      * <p>
      * <p>On UNIX systems, it returns {@code "\n"}; on Microsoft
      * Windows systems it returns {@code "\r\n"}.
@@ -183,13 +230,11 @@ public class HackSystem {
      * forgotten.
      *
      * @param props the new system properties.
-     * @throws SecurityException if a security manager exists and its
-     *                           <code>checkPropertiesAccess</code> method doesn't allow access
-     *                           to the system properties.
-     * @see #getProperties
+     * @throws SecurityException if a security manager exists and its                           <code>checkPropertiesAccess</code> method doesn't allow access                           to the system properties.
+     * @see #getProperties #getProperties
      * @see java.util.Properties
      * @see java.lang.SecurityException
-     * @see java.lang.SecurityManager#checkPropertiesAccess()
+     * @see java.lang.SecurityManager#checkPropertiesAccess() java.lang.SecurityManager#checkPropertiesAccess()
      */
     public static void setProperties(Properties props) {
         SecurityManager sm = getSecurityManager();
@@ -215,18 +260,14 @@ public class HackSystem {
      * for the <code>getProperties</code> method.
      *
      * @param key the name of the system property.
-     * @return the string value of the system property,
-     * or <code>null</code> if there is no property with that key.
-     * @throws SecurityException        if a security manager exists and its
-     *                                  <code>checkPropertyAccess</code> method doesn't allow
-     *                                  access to the specified system property.
-     * @throws NullPointerException     if <code>key</code> is
-     *                                  <code>null</code>.
+     * @return the string value of the system property, or <code>null</code> if there is no property with that key.
+     * @throws SecurityException        if a security manager exists and its                                  <code>checkPropertyAccess</code> method doesn't allow                                  access to the specified system property.
+     * @throws NullPointerException     if <code>key</code> is                                  <code>null</code>.
      * @throws IllegalArgumentException if <code>key</code> is empty.
-     * @see #setProperty
+     * @see #setProperty #setProperty
      * @see java.lang.SecurityException
-     * @see java.lang.SecurityManager#checkPropertyAccess(java.lang.String)
-     * @see java.lang.System#getProperties()
+     * @see java.lang.SecurityManager#checkPropertyAccess(java.lang.String) java.lang.SecurityManager#checkPropertyAccess(java.lang.String)
+     * @see java.lang.System#getProperties() java.lang.System#getProperties()
      */
     public static String getProperty(String key) {
         checkKey(key);
@@ -251,17 +292,13 @@ public class HackSystem {
      *
      * @param key the name of the system property.
      * @param def a default value.
-     * @return the string value of the system property,
-     * or the default value if there is no property with that key.
-     * @throws SecurityException        if a security manager exists and its
-     *                                  <code>checkPropertyAccess</code> method doesn't allow
-     *                                  access to the specified system property.
-     * @throws NullPointerException     if <code>key</code> is
-     *                                  <code>null</code>.
+     * @return the string value of the system property, or the default value if there is no property with that key.
+     * @throws SecurityException        if a security manager exists and its                                  <code>checkPropertyAccess</code> method doesn't allow                                  access to the specified system property.
+     * @throws NullPointerException     if <code>key</code> is                                  <code>null</code>.
      * @throws IllegalArgumentException if <code>key</code> is empty.
-     * @see #setProperty
-     * @see java.lang.SecurityManager#checkPropertyAccess(java.lang.String)
-     * @see java.lang.System#getProperties()
+     * @see #setProperty #setProperty
+     * @see java.lang.SecurityManager#checkPropertyAccess(java.lang.String) java.lang.SecurityManager#checkPropertyAccess(java.lang.String)
+     * @see java.lang.System#getProperties() java.lang.System#getProperties()
      */
     public static String getProperty(String key, String def) {
         checkKey(key);
@@ -286,19 +323,15 @@ public class HackSystem {
      *
      * @param key   the name of the system property.
      * @param value the value of the system property.
-     * @return the previous value of the system property,
-     * or <code>null</code> if it did not have one.
-     * @throws SecurityException        if a security manager exists and its
-     *                                  <code>checkPermission</code> method doesn't allow
-     *                                  setting of the specified property.
-     * @throws NullPointerException     if <code>key</code> or
-     *                                  <code>value</code> is <code>null</code>.
+     * @return the previous value of the system property, or <code>null</code> if it did not have one.
+     * @throws SecurityException        if a security manager exists and its                                  <code>checkPermission</code> method doesn't allow                                  setting of the specified property.
+     * @throws NullPointerException     if <code>key</code> or                                  <code>value</code> is <code>null</code>.
      * @throws IllegalArgumentException if <code>key</code> is empty.
-     * @see #getProperty
-     * @see java.lang.System#getProperty(java.lang.String)
-     * @see java.lang.System#getProperty(java.lang.String, java.lang.String)
+     * @see #getProperty #getProperty
+     * @see java.lang.System#getProperty(java.lang.String) java.lang.System#getProperty(java.lang.String)
+     * @see java.lang.System#getProperty(java.lang.String, java.lang.String) java.lang.System#getProperty(java.lang.String, java.lang.String)
      * @see java.util.PropertyPermission
-     * @see SecurityManager#checkPermission
+     * @see SecurityManager#checkPermission SecurityManager#checkPermission
      * @since 1.2
      */
     public static String setProperty(String key, String value) {
@@ -323,19 +356,15 @@ public class HackSystem {
      * <p>
      *
      * @param key the name of the system property to be removed.
-     * @return the previous string value of the system property,
-     * or <code>null</code> if there was no property with that key.
-     * @throws SecurityException        if a security manager exists and its
-     *                                  <code>checkPropertyAccess</code> method doesn't allow
-     *                                  access to the specified system property.
-     * @throws NullPointerException     if <code>key</code> is
-     *                                  <code>null</code>.
+     * @return the previous string value of the system property, or <code>null</code> if there was no property with that key.
+     * @throws SecurityException        if a security manager exists and its                                  <code>checkPropertyAccess</code> method doesn't allow                                  access to the specified system property.
+     * @throws NullPointerException     if <code>key</code> is                                  <code>null</code>.
      * @throws IllegalArgumentException if <code>key</code> is empty.
-     * @see #getProperty
-     * @see #setProperty
+     * @see #getProperty #getProperty
+     * @see #setProperty #setProperty
      * @see java.util.Properties
      * @see java.lang.SecurityException
-     * @see java.lang.SecurityManager#checkPropertiesAccess()
+     * @see java.lang.SecurityManager#checkPropertiesAccess() java.lang.SecurityManager#checkPropertiesAccess()
      * @since 1.5
      */
     public static String clearProperty(String key) {
@@ -372,9 +401,8 @@ public class HackSystem {
      * </pre></blockquote>
      *
      * @param status exit status.
-     * @throws SecurityException if a security manager exists and its <code>checkExit</code>
-     *                           method doesn't allow exit with the specified status.
-     * @see java.lang.Runtime#exit(int)
+     * @throws SecurityException if a security manager exists and its <code>checkExit</code>                           method doesn't allow exit with the specified status.
+     * @see java.lang.Runtime#exit(int) java.lang.Runtime#exit(int)
      */
     public static void exit(int status) {
         Runtime.getRuntime().exit(status);
@@ -396,7 +424,7 @@ public class HackSystem {
      * Runtime.getRuntime().gc()
      * </pre></blockquote>
      *
-     * @see java.lang.Runtime#gc()
+     * @see java.lang.Runtime#gc() java.lang.Runtime#gc()
      */
     public static void gc() {
         Runtime.getRuntime().gc();
@@ -418,7 +446,7 @@ public class HackSystem {
      * Runtime.getRuntime().runFinalization()
      * </pre></blockquote>
      *
-     * @see java.lang.Runtime#runFinalization()
+     * @see java.lang.Runtime#runFinalization() java.lang.Runtime#runFinalization()
      */
     public static void runFinalization() {
         Runtime.getRuntime().runFinalization();
@@ -436,16 +464,12 @@ public class HackSystem {
      * This could result in a SecurityException.
      *
      * @param value indicating enabling or disabling of finalization
-     * @throws SecurityException if a security manager exists and its <code>checkExit</code>
-     *                           method doesn't allow the exit.
-     * @see java.lang.Runtime#exit(int)
-     * @see java.lang.Runtime#gc()
-     * @see java.lang.SecurityManager#checkExit(int)
+     * @throws SecurityException if a security manager exists and its <code>checkExit</code>                           method doesn't allow the exit.
+     * @see java.lang.Runtime#exit(int) java.lang.Runtime#exit(int)
+     * @see java.lang.Runtime#gc() java.lang.Runtime#gc()
+     * @see java.lang.SecurityManager#checkExit(int) java.lang.SecurityManager#checkExit(int)
      * @since JDK1.1
-     * @deprecated This method is inherently unsafe.  It may result in
-     * finalizers being called on live objects while other threads are
-     * concurrently manipulating those objects, resulting in erratic
-     * behavior or deadlock.
+     * @deprecated This method is inherently unsafe.  It may result in finalizers being called on live objects while other threads are concurrently manipulating those objects, resulting in erratic behavior or deadlock.
      */
     @Deprecated
     public static void runFinalizersOnExit(boolean value) {
@@ -476,17 +500,11 @@ public class HackSystem {
      * </pre></blockquote>
      *
      * @param filename the file to load.
-     * @throws SecurityException    if a security manager exists and its
-     *                              <code>checkLink</code> method doesn't allow
-     *                              loading of the specified dynamic library
-     * @throws UnsatisfiedLinkError if either the filename is not an
-     *                              absolute path name, the native library is not statically
-     *                              linked with the VM, or the library cannot be mapped to
-     *                              a native library image by the host system.
-     * @throws NullPointerException if <code>filename</code> is
-     *                              <code>null</code>
-     * @see java.lang.Runtime#load(java.lang.String)
-     * @see java.lang.SecurityManager#checkLink(java.lang.String)
+     * @throws SecurityException    if a security manager exists and its                              <code>checkLink</code> method doesn't allow                              loading of the specified dynamic library
+     * @throws UnsatisfiedLinkError if either the filename is not an                              absolute path name, the native library is not statically                              linked with the VM, or the library cannot be mapped to                              a native library image by the host system.
+     * @throws NullPointerException if <code>filename</code> is                              <code>null</code>
+     * @see java.lang.Runtime#load(java.lang.String) java.lang.Runtime#load(java.lang.String)
+     * @see java.lang.SecurityManager#checkLink(java.lang.String) java.lang.SecurityManager#checkLink(java.lang.String)
      */
     @CallerSensitive
     public static void load(String filename) {
@@ -512,17 +530,11 @@ public class HackSystem {
      * </pre></blockquote>
      *
      * @param libname the name of the library.
-     * @throws SecurityException    if a security manager exists and its
-     *                              <code>checkLink</code> method doesn't allow
-     *                              loading of the specified dynamic library
-     * @throws UnsatisfiedLinkError if either the libname argument
-     *                              contains a file path, the native library is not statically
-     *                              linked with the VM,  or the library cannot be mapped to a
-     *                              native library image by the host system.
-     * @throws NullPointerException if <code>libname</code> is
-     *                              <code>null</code>
-     * @see java.lang.Runtime#loadLibrary(java.lang.String)
-     * @see java.lang.SecurityManager#checkLink(java.lang.String)
+     * @throws SecurityException    if a security manager exists and its                              <code>checkLink</code> method doesn't allow                              loading of the specified dynamic library
+     * @throws UnsatisfiedLinkError if either the libname argument                              contains a file path, the native library is not statically                              linked with the VM,  or the library cannot be mapped to a                              native library image by the host system.
+     * @throws NullPointerException if <code>libname</code> is                              <code>null</code>
+     * @see java.lang.Runtime#loadLibrary(java.lang.String) java.lang.Runtime#loadLibrary(java.lang.String)
+     * @see java.lang.SecurityManager#checkLink(java.lang.String) java.lang.SecurityManager#checkLink(java.lang.String)
      */
     @CallerSensitive
     public static void loadLibrary(String libname) {
@@ -535,10 +547,9 @@ public class HackSystem {
      *
      * @param libname the name of the library.
      * @return a platform-dependent native library name.
-     * @throws NullPointerException if <code>libname</code> is
-     *                              <code>null</code>
-     * @see java.lang.System#loadLibrary(java.lang.String)
-     * @see java.lang.ClassLoader#findLibrary(java.lang.String)
+     * @throws NullPointerException if <code>libname</code> is                              <code>null</code>
+     * @see java.lang.System#loadLibrary(java.lang.String) java.lang.System#loadLibrary(java.lang.String)
+     * @see java.lang.ClassLoader#findLibrary(java.lang.String) java.lang.ClassLoader#findLibrary(java.lang.String)
      * @since 1.2
      */
     public static native String mapLibraryName(String libname);
