@@ -1,4 +1,4 @@
-package com.wzj.javalearning.multithread.printabc;
+package com.wufish.javalearning.multithread.printabc;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

@@ -1,4 +1,4 @@
-package com.wzj.javalearning.multithread.printabc;
+package com.wufish.javalearning.multithread.printabc;
 
 /**
  * @Author wzj
