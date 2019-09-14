@@ -36,7 +36,7 @@ public class DuplicationInArrayNoEdit {
         int end = numbers.length - 1;
         // 调用 log n 次, 二分查找
         while (end >= start) {
-            int middle = start + ((end - start) >> 1);
+            int middle = (start + end) >> 1;
             int count = countRange(numbers, start, middle);
             if (start == end) {
                 if (count > 1) {
