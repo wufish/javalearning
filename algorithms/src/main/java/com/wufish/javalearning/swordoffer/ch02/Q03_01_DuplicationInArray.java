@@ -1,4 +1,4 @@
-package com.wufish.javalearning.swordoffer.array;
+package com.wufish.javalearning.swordoffer.ch02;
 
 /**
  * 找出数组中重复的数字
@@ -24,7 +24,7 @@ package com.wufish.javalearning.swordoffer.array;
  * 如果不相等，就把第 i 个数 和第 nums[i] 个数交换。重复这个比较交换的过程。
  * 此算法时间复杂度为 O(n)，因为每个元素最多只要两次交换，就能确定位置。空间复杂度为 O(1)。
  */
-public class DuplicationInArray {
+public class Q03_01_DuplicationInArray {
     /**
      * 查找数组中的重复元素
      *
@@ -74,7 +74,7 @@ public class DuplicationInArray {
     public static void main(String[] args) {
         int[] arr = {2, 3, 1, 0, 2, 5, 2};
         int[] duplication = new int[7];
-        boolean duplicate = new DuplicationInArray().duplicate(arr, 7, duplication);
+        boolean duplicate = new Q03_01_DuplicationInArray().duplicate(arr, 7, duplication);
         System.out.println(duplication);
     }
 }
