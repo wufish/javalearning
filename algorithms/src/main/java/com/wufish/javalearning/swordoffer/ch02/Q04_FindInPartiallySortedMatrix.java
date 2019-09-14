@@ -1,4 +1,4 @@
-package com.wufish.javalearning.swordoffer.array;
+package com.wufish.javalearning.swordoffer.ch02;
 
 /**
  * ## 二维数组中的查找
@@ -19,7 +19,7 @@ package com.wufish.javalearning.swordoffer.array;
  * <p>
  * 注意，不能选择左上方或者右下方的数字，因为这样无法缩小查找的范围。
  */
-public class FindInPartiallySortedMatrix {
+public class Q04_FindInPartiallySortedMatrix {
     /**
      * 二维数组中的查找,从左下
      *
@@ -80,7 +80,7 @@ public class FindInPartiallySortedMatrix {
      */
     public static void main(String[] args) {
         int[][] arr = {{1, 2, 8, 9}, {2, 4, 9, 2}, {4, 7, 10, 13}, {6, 8, 11, 15}};
-        boolean fromRightTop = new FindInPartiallySortedMatrix().findFromRightTop(7, arr);
+        boolean fromRightTop = new Q04_FindInPartiallySortedMatrix().findFromRightTop(7, arr);
         System.out.println(fromRightTop);
     }
 }

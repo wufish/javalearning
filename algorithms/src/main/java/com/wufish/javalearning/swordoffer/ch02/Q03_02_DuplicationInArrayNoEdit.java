@@ -1,4 +1,4 @@
-package com.wufish.javalearning.swordoffer.array;
+package com.wufish.javalearning.swordoffer.ch02;
 
 /**
  * 不修改数组找出重复的数字
@@ -21,7 +21,7 @@ package com.wufish.javalearning.swordoffer.array;
  * <p>
  * 注意，此方法无法找出所有重复的元素。拿时间换空间
  */
-public class DuplicationInArrayNoEdit {
+public class Q03_02_DuplicationInArrayNoEdit {
     /**
      * 不修改数组查找重复的元素，没有则返回-1
      *
@@ -84,7 +84,7 @@ public class DuplicationInArrayNoEdit {
      */
     public static void main(String[] args) {
         int[] arr = {2, 3, 5, 4, 3, 2, 6, 7};
-        int duplication = new DuplicationInArrayNoEdit().getDuplication(arr);
+        int duplication = new Q03_02_DuplicationInArrayNoEdit().getDuplication(arr);
         System.out.println(duplication);
     }
 }
