@@ -41,11 +41,11 @@ public class Q08_NextNodeInBinaryTrees {
             }
             return t;
         }
-        // 是不是父节点的左子树
+        // 2. 是不是父节点的左子树
         if (pNode.parent != null && pNode.parent.left == pNode) {
             return pNode.parent;
         }
-        // 找到父节点是左子树的节点
+        // 3. 找到父节点是左子树的节点
         TreeLinkNode tmp = pNode;
         while (tmp.parent != null) {
             if (tmp.parent.left == tmp) {
