@@ -91,6 +91,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.8</version>
+            <scope>compile</scope>
         </dependency>
         <!-- test-->
         <dependency>
@@ -129,8 +130,8 @@
                 <version>3.8.0</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>utf-8</encoding>
                 </configuration>
             </plugin>

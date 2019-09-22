@@ -87,7 +87,8 @@ public class UsageGudide {
         System.out.println(result.get());//This can be any method which returns: 'Hello world'
 
         CircuitBreaker otherTestCircuitBreaker = CircuitBreaker.ofDefaults("otherTestName");
-        CheckedFunction1<Object, String> decoratedFunction = CircuitBreaker.decorateCheckedFunction(otherTestCircuitBreaker, (input) -> input + " worlds");
+        CheckedFunction1<Object, String> decoratedFunction =
+                CircuitBreaker.decorateCheckedFunction(otherTestCircuitBreaker, (input) -> input + " worlds");
         Try<String> chainResult = Try.of(decoratedSupplier).mapTry(decoratedFunction::apply);
         System.out.println(chainResult.isSuccess());
         System.out.println(chainResult.get());
@@ -109,7 +110,8 @@ public class UsageGudide {
         // CircuitBreaker is OPEN, because the failure rate is above 50%
         System.out.println(circuitBreaker.getState());
 
-        CheckedFunction0<String> checkedFunction0 = CircuitBreaker.decorateCheckedSupplier(circuitBreaker, () -> "Hello");
+        CheckedFunction0<String> checkedFunction0 = CircuitBreaker.decorateCheckedSupplier(circuitBreaker, () ->
+                "Hello");
         // When I decorate my function and invoke the decorated function
         result = Try.of(CircuitBreaker.decorateCheckedSupplier(circuitBreaker, () -> "Hello"))
                 .map(value -> value + " world");
@@ -176,7 +178,8 @@ public class UsageGudide {
         // Or create RateLimiter directly
         RateLimiter rateLimiter = RateLimiter.of("NASDAQ :-)", config);
 
-        /*CheckedRunnable restrictedCall = RateLimiter.decorateCheckedRunnable(rateLimiter, backendService::doSomething);
+        /*CheckedRunnable restrictedCall = RateLimiter.decorateCheckedRunnable(rateLimiter,
+        backendService::doSomething);
         Try.run(restrictedCall)
                 .andThenTry(restrictedCall)
                 .onFailure((RequestNotPermitted throwable) -> log.info("Wait before call it again :)"));*/
@@ -199,7 +202,7 @@ public class UsageGudide {
         // Create a custom configuration for a Bulkhead
         BulkheadConfig config = BulkheadConfig.custom()
                 .maxConcurrentCalls(150)// 允许的最大并行执行量
-                .maxWaitTime(100)// 尝试进入饱和舱壁时可以阻止线程的最大时间
+                .maxWaitDuration(Duration.ofMillis(100))// 尝试进入饱和舱壁时可以阻止线程的最大时间
                 .build();
 
         // Create a BulkheadRegistry with a custom global configuration
@@ -210,7 +213,7 @@ public class UsageGudide {
 
         // Get-Or-Create a Bulkhead from the registry, use a custom configuration when creating the bulkhead
         BulkheadConfig custom = BulkheadConfig.custom()
-                .maxWaitTime(0)
+                .maxWaitDuration(Duration.ofMillis(0))
                 .build();
 
         Bulkhead bulkhead2 = registry.bulkhead("bar", custom);
@@ -311,7 +314,8 @@ public class UsageGudide {
         Try.of(restrictedCall.call())
                 .onFailure(throwable -> log.info("A timeout possibly occurred."));*/
 
-       /* Supplier<CompletableFuture<Integer>> futureSupplier = () -> CompletableFuture.supplyAsync(backendService::doSomething);
+       /* Supplier<CompletableFuture<Integer>> futureSupplier = () -> CompletableFuture.supplyAsync
+       (backendService::doSomething);
 
         Callable restrictedCall = TimeLimiter.decorateFutureSupplier(timeLimiter, futureSupplier);
 
