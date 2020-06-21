@@ -25,6 +25,7 @@ import javax.cache.Caching;
 import javax.xml.ws.WebServiceException;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static io.vavr.API.*;
@@ -102,11 +103,11 @@ public class UsageGudide {
         circuitBreaker = CircuitBreaker.of("testName", circuitBreakerConfig);
 
         // 2. Simulate a failure attempt
-        circuitBreaker.onError(0, new RuntimeException());
+        circuitBreaker.onError(0, TimeUnit.SECONDS, new RuntimeException());
         // CircuitBreaker is still CLOSED, because 1 failure is allowed
         System.out.println(circuitBreaker.getState());
         // Simulate a failure attempt
-        circuitBreaker.onError(0, new RuntimeException());
+        circuitBreaker.onError(0, TimeUnit.SECONDS, new RuntimeException());
         // CircuitBreaker is OPEN, because the failure rate is above 50%
         System.out.println(circuitBreaker.getState());
 
@@ -327,7 +328,7 @@ public class UsageGudide {
     }
 
     public static void main(String[] args) {
-        //CircuitBreaker();
+        CircuitBreaker();
         RateLimiter();
         Bulkhead();
     }

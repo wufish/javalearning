@@ -48,10 +48,11 @@ public class Q20_NumericStrings {
      * @param str
      * @return
      */
-    public boolean isNumeric(char[] str) {
+    public boolean isNumeric1(char[] str) {
         if (str == null || str.length < 1) {
             return false;
         }
+        return true;
     }
 
     /**

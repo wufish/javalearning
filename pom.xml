@@ -15,6 +15,7 @@
 
     <properties>
         <encoding>UTF-8</encoding>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
     </properties>
@@ -130,9 +131,11 @@
                 <version>3.8.0</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <encoding>utf-8</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${encoding}</encoding>
+                    <testSource>${java.version}</testSource>
+                    <testTarget>${java.version}</testTarget>
                 </configuration>
             </plugin>
             <!-- 生成JavaDoc文档-->
@@ -180,6 +183,7 @@
                     <skipTests>true</skipTests>
                 </configuration>
             </plugin>
+
             <!--src/main/resources/目录下的文件和目录都会打包到jar中。-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
