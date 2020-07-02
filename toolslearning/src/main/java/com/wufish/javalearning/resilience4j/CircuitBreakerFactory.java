@@ -34,28 +34,6 @@ public class CircuitBreakerFactory {
         });
     }
 
-    /**
-     * Wrap checked function 0.
-     *
-     * @param <R>             the type parameter
-     * @param checkedSupplier the checked supplier
-     * @return the checked function 0
-     */
-    public <R> CheckedFunction0<R> wrap(CheckedFunction0<R> checkedSupplier) {
-        return CircuitBreaker.decorateCheckedSupplier(circuitBreaker, checkedSupplier);
-    }
-
-    /**
-     * Wrap try try.
-     *
-     * @param <R>             the type parameter
-     * @param checkedSupplier the checked supplier
-     * @return the try
-     */
-    public <R> Try<R> wrapTry(CheckedFunction0<R> checkedSupplier) {
-        return Try.of(wrap(checkedSupplier));
-    }
-
     private static CircuitBreakerConfig getDefaultConfig() {
         return CircuitBreakerConfig.custom()
                 // 创建熔断器配置
@@ -88,7 +66,31 @@ public class CircuitBreakerFactory {
      * @return the circuit breaker factory
      */
     public static CircuitBreakerFactory of(CircuitBreakerConfig breakerConfig, String name) {
+        // 注册器注册，（从 map 缓存中获取数据）
         CircuitBreaker circuitBreaker = CircuitBreakerRegistry.of(breakerConfig).circuitBreaker(name);
+        //CircuitBreaker.ofDefaults(name); // 创建状态机
         return new CircuitBreakerFactory(circuitBreaker);
+    }
+
+    /**
+     * Wrap checked function 0.
+     *
+     * @param <R>             the type parameter
+     * @param checkedSupplier the checked supplier
+     * @return the checked function 0
+     */
+    public <R> CheckedFunction0<R> wrap(CheckedFunction0<R> checkedSupplier) {
+        return CircuitBreaker.decorateCheckedSupplier(circuitBreaker, checkedSupplier);
+    }
+
+    /**
+     * Wrap try try.
+     *
+     * @param <R>             the type parameter
+     * @param checkedSupplier the checked supplier
+     * @return the try
+     */
+    public <R> Try<R> wrapTry(CheckedFunction0<R> checkedSupplier) {
+        return Try.of(wrap(checkedSupplier));
     }
 }

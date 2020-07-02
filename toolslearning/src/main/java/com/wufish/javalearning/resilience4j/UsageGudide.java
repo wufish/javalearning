@@ -11,12 +11,14 @@ import io.github.resilience4j.decorators.Decorators;
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import io.github.resilience4j.ratelimiter.RateLimiterRegistry;
+import io.github.resilience4j.ratelimiter.internal.AtomicRateLimiter;
 import io.github.resilience4j.retry.Retry;
 import io.github.resilience4j.retry.RetryConfig;
 import io.github.resilience4j.timelimiter.TimeLimiter;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 import io.vavr.CheckedFunction0;
 import io.vavr.CheckedFunction1;
+import io.vavr.CheckedRunnable;
 import io.vavr.Predicates;
 import io.vavr.control.Try;
 import lombok.extern.slf4j.Slf4j;
@@ -25,9 +27,13 @@ import javax.cache.Caching;
 import javax.xml.ws.WebServiceException;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
+import static com.google.common.base.Predicates.instanceOf;
 import static io.vavr.API.*;
 
 /**
@@ -59,23 +65,28 @@ public class UsageGudide {
 
     public static void CircuitBreaker() {
         // CircuitBreaker - 断路器
-        // 使用默认断路器
+        // 1. 使用注册器注册器创建 CircuitBreaker，map 缓存
+        //  1.1 默认配置创建注册器
         CircuitBreakerRegistry circuitBreakerRegistry = CircuitBreakerRegistry.ofDefaults();
-        // 自定义断路器配置
+        //  1.2 自定义断路器配置
         CircuitBreakerConfig circuitBreakerConfig = CircuitBreakerConfig.custom()
+                .ringBufferSizeInClosedState(2)// 关闭状态，断路器环形缓冲区大小
                 .failureRateThreshold(50)// 故障率阈值百分比，超过该值，断路器开始断路调用
                 .waitDurationInOpenState(Duration.ofMillis(1000))// 等待持续时间，在切换半开状态之前断路器应该保持的时间
                 .ringBufferSizeInHalfOpenState(2)// 半开状态，断路器环形缓冲区大小
-                .ringBufferSizeInClosedState(2)// 关闭状态，断路器环形缓冲区大小
                 .recordExceptions(IOException.class, TimeoutException.class)//增加故障技术的异常列表
                 //.ignoreExceptions(BusinessException.class, OtherBusinessException.class)// 忽略的异常
+                // 默认所有异常都被认定为失败事件，你可以定制Predicate的test检查，实现选择性记录，只有该函数返回为true时异常才被认定为失败事件。
+                .recordException(throwable -> Match(throwable).of(
+                        Case($(instanceOf(WebServiceException.class)), true),
+                        Case($(), false)))
                 .build();
         CircuitBreakerRegistry circuitBreakerRegistry2 = CircuitBreakerRegistry.of(circuitBreakerConfig);
-        // 获取断路器
+        //  1.3 获取断路器
         CircuitBreaker circuitBreaker = circuitBreakerRegistry2.circuitBreaker("otherName");
         CircuitBreaker circuitBreaker2 = circuitBreakerRegistry2.circuitBreaker("otherName", circuitBreakerConfig);
 
-        // 直接创建CircuitBreaker实例
+        // 2. 直接创建CircuitBreaker实例
         CircuitBreaker defaultCircuitBreaker = CircuitBreaker.ofDefaults("testName");
         CircuitBreaker customCircuitBreaker = CircuitBreaker.of("testName", circuitBreakerConfig);
 
@@ -90,7 +101,7 @@ public class UsageGudide {
         CircuitBreaker otherTestCircuitBreaker = CircuitBreaker.ofDefaults("otherTestName");
         CheckedFunction1<Object, String> decoratedFunction =
                 CircuitBreaker.decorateCheckedFunction(otherTestCircuitBreaker, (input) -> input + " worlds");
-        Try<String> chainResult = Try.of(decoratedSupplier).mapTry(decoratedFunction::apply);
+        Try<String> chainResult = Try.of(decoratedSupplier).mapTry(decoratedFunction);
         System.out.println(chainResult.isSuccess());
         System.out.println(chainResult.get());
 
@@ -120,15 +131,17 @@ public class UsageGudide {
         // Then the call fails, because CircuitBreaker is OPEN
         System.out.println(result.isFailure());
         // Exception is CircuitBreakerOpenException
-        System.out.println(result.failed().get());
+        System.out.println(result.failed().get().getMessage());
 
         // 3. 重启, 返回原始状态，丢失当前所有指标
         circuitBreaker.reset();
 
         // 4. 从调用前异常中恢复
-        // 5. 从调用后异常中恢复
-        Try.of(checkedFunction0).recover(throwable -> "hello recovery");
+        // 5. 从调用后异常中恢复, 熔断器降级
+        Try<String> recover = Try.of(checkedFunction0).recover(throwable -> "hello recovery");
+
         // 6. 自定义异常处理
+        // 默认所有异常都被认定为失败事件，你可以定制Predicate的test检查，实现选择性记录，只有该函数返回为true时异常才被认定为失败事件。
         CircuitBreakerConfig exceptionBreakerConfig = CircuitBreakerConfig.custom()
                 .ringBufferSizeInClosedState(2)
                 .ringBufferSizeInHalfOpenState(2)
@@ -164,8 +177,8 @@ public class UsageGudide {
     public static void RateLimiter() {
         // For example you want to restrict the calling rate of some method to be not higher than 10 req/ms.
         RateLimiterConfig config = RateLimiterConfig.custom()
+                .limitForPeriod(10)// 频次阈值
                 .limitRefreshPeriod(Duration.ofMillis(1))// 限制刷新周期，每个周期限速器将其权限计数设置为limitForPeriod值
-                .limitForPeriod(10)// 刷新周期权限限制
                 .timeoutDuration(Duration.ofMillis(25))//默认等待权限持续时间。
                 .build();
 
@@ -179,11 +192,14 @@ public class UsageGudide {
         // Or create RateLimiter directly
         RateLimiter rateLimiter = RateLimiter.of("NASDAQ :-)", config);
 
-        /*CheckedRunnable restrictedCall = RateLimiter.decorateCheckedRunnable(rateLimiter,
-        backendService::doSomething);
+        CheckedRunnable restrictedCall = RateLimiter.decorateCheckedRunnable(rateLimiter, () -> {
+            System.out.println("");
+        });
         Try.run(restrictedCall)
                 .andThenTry(restrictedCall)
-                .onFailure((RequestNotPermitted throwable) -> log.info("Wait before call it again :)"));*/
+                .onFailure(throwable -> log.info("Wait before call it again :)"));
+
+        Supplier<Integer> integerSupplier = RateLimiter.decorateSupplier(rateLimiter, () -> 1);
 
         // durring second refresh cycle limiter will get 100 permissions
         // 新的超时持续时间不会影响当前正在等待权限的线程。
@@ -194,6 +210,47 @@ public class UsageGudide {
         rateLimiter.getEventPublisher()
                 .onSuccess(event -> log.info(""))
                 .onFailure(event -> log.info(""));
+
+        RateLimiter.Metrics metrics = rateLimiter.getMetrics();
+        int numberOfThreadsWaitingForPermission = metrics.getNumberOfWaitingThreads();
+        int availablePermissions = metrics.getAvailablePermissions();
+
+        AtomicRateLimiter atomicLimiter = new AtomicRateLimiter("", RateLimiterConfig.custom().build());
+    }
+
+    public static void TimeLimiter() throws Exception {
+        // For example, you want to restrict the execution of a long running task to 60 seconds.
+        TimeLimiterConfig config = TimeLimiterConfig.custom()
+                .timeoutDuration(Duration.ofSeconds(60))
+                .cancelRunningFuture(true)
+                .build();
+
+        // Create TimeLimiter
+        TimeLimiter timeLimiter = TimeLimiter.of(config);
+
+        // Run your call to BackendService.doSomething() asynchronously
+        Supplier<CompletableFuture<Integer>> futureSupplier = () -> CompletableFuture.supplyAsync(() -> 1);
+
+        // Either execute the future
+        Integer result = timeLimiter.executeFutureSupplier(futureSupplier);
+
+        // Or decorate your supplier so that the future can be retrieved and executed upon
+        Callable restrictedCall = TimeLimiter
+                .decorateFutureSupplier(timeLimiter, futureSupplier);
+
+        Try.of(restrictedCall::call)
+                .onFailure(throwable -> log.info("A timeout possibly occurred."));
+
+        Supplier<CompletableFuture<Integer>> futureSupplier2 = () -> CompletableFuture.supplyAsync
+                (() -> 1);
+
+        Callable restrictedCall2 = TimeLimiter.decorateFutureSupplier(timeLimiter, futureSupplier);
+
+        // Decorate the restricted callable with a CircuitBreaker
+        Callable chainedCallable = CircuitBreaker.decorateCallable(null, restrictedCall2);
+
+        Try.of(chainedCallable::call)
+                .onFailure(throwable -> log.info("We might have timed out or the circuit breaker has opened."));
     }
 
     public static void Bulkhead() {
@@ -290,41 +347,6 @@ public class UsageGudide {
                 .onCacheHit(event -> log.info(""))
                 .onCacheMiss(event -> log.info(""))
                 .onError(event -> log.info(""));
-    }
-
-    public static void TimeLimiter() {
-        // For example, you want to restrict the execution of a long running task to 60 seconds.
-        TimeLimiterConfig config = TimeLimiterConfig.custom()
-                .timeoutDuration(Duration.ofSeconds(60))
-                .cancelRunningFuture(true)
-                .build();
-
-        // Create TimeLimiter
-        TimeLimiter timeLimiter = TimeLimiter.of(config);
-
-      /*  // Run your call to BackendService.doSomething() asynchronously
-        Supplier<CompletableFuture<Integer>> futureSupplier = () -> CompletableFuture.supplyAsync(() -> "");
-
-        // Either execute the future
-        Integer result = timeLimiter.executeFutureSupplier(futureSupplier);
-
-        // Or decorate your supplier so that the future can be retrieved and executed upon
-        Callable restrictedCall = TimeLimiter
-                .decorateFutureSupplier(timeLimiter, futureSupplier);
-
-        Try.of(restrictedCall.call())
-                .onFailure(throwable -> log.info("A timeout possibly occurred."));*/
-
-       /* Supplier<CompletableFuture<Integer>> futureSupplier = () -> CompletableFuture.supplyAsync
-       (backendService::doSomething);
-
-        Callable restrictedCall = TimeLimiter.decorateFutureSupplier(timeLimiter, futureSupplier);
-
-        // Decorate the restricted callable with a CircuitBreaker
-        Callable chainedCallable = CircuitBreaker.decorateCallable(circuitBreaker, restrictedCall);
-
-        Try.of(chainedCallable::call)
-                .onFailure(throwable -> log.info("We might have timed out or the circuit breaker has opened."));*/
     }
 
     public static void main(String[] args) {
