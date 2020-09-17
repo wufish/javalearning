@@ -1,4 +1,4 @@
-package com.wufish.javalearning.google.guava.cache;
+package com.wufish.javalearning.alibaba;
 
 import lombok.ToString;
 
@@ -11,11 +11,12 @@ import java.util.TreeMap;
  * @Create time: 2020/9/17 21:42
  * @Description:
  */
-public class Tester3 {
+public class Tester2_1 {
     public static void main(String[] args) {
         String res = find("Welcome4(ToAlibaba(To3)2)2");
         System.out.println(res);
     }
+
     public static String find(String s) {
         if (s == null || s.length() < 1) {
             throw new IllegalArgumentException();
@@ -117,6 +118,7 @@ public class Tester3 {
         String value;
         int num;
         int len;
+
         Word(String value, int num, int len) {
             this.value = value;
             this.num = num;
