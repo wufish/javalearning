@@ -1,10 +1,6 @@
 package com.wufish.javalearning.alibaba;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * 2.单词统计
@@ -30,83 +26,102 @@ public class Tester2 {
     static Map<String, Integer> wordMap = new HashMap<>();
 
     public static void main(String[] args) {
-        print("Alibaba2To14Welcome4");
+        System.out.println(convert("Welcome4(ToAlibaba(To3)2)2"));
+        System.out.println(convert("Welcome4(ToAlibaba(To)2)2"));
+        System.out.println(convert("Welcome4(ToAlibaba2)2"));
+        System.out.println(convert("Welcome(ToAlibaba2(To2))2"));
+        System.out.println(convert("Welcome(ToAlibaba2(To2)3)2"));
+        System.out.println();
     }
 
-    private static void print(String s) {
-        dfs(s, 0);
-        // 根据字符串排序排序，存入优先级队列
-        PriorityQueue<String> queue = new PriorityQueue<>((a, b) -> {
-            int compare = a.compareTo(b);
-            return compare == 0 ? wordMap.get(a) - wordMap.get(b) : compare;
-        });
-        // 按顺序保存字符创结果
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < queue.size(); i++) {
-            String str = queue.poll();
-            int count = wordMap.getOrDefault(str, 0);
-            sb.append(str).append(count > 1 ? count + "" : "");
+    private static String convert(String s) {
+        List<Word> dfs = dfs(s, new int[]{0});
+        TreeMap<String, Integer> wordMap = new TreeMap<>();
+        for (Word df : dfs) {
+            wordMap.put(df.word, wordMap.getOrDefault(df.word, 0) + df.num);
         }
-        System.out.println(sb.toString());
+        StringBuilder res = new StringBuilder();
+        for (Map.Entry<String, Integer> entry : wordMap.entrySet()) {
+            res.append(entry.getKey()).append(entry.getValue() == 1 ? "" : entry.getValue());
+        }
+        return res.toString();
     }
 
     /**
-     * 输入
-     * "Welcome4(ToAlibaba(To3)2)2"
-     * 对字符串解码
-     * 输出
-     * {'Alibaba': 2,  'To': 14', Welcome': 4,}。
-     * 返回数组，0 是下一个索引，1 是出现次数
+     * 字符串处理成单词列表
      */
-    private static String[] dfs(String s, int i) {
-        StringBuilder res = new StringBuilder();
+    private static List<Word> dfs(String s, int[] start) {
+        StringBuilder sb = new StringBuilder();
+        List<Word> wordList = new LinkedList<>();
         int multi = 0;
-        while (i < s.length()) {
-            char c = s.charAt(i);
-            // 遇到数字， 累加
-            if (c >= '0' && c <= '9') {
-                multi = multi * 10 + (c - '0');
+        while (start[0] < s.length()) {
+            char c = s.charAt(start[0]);
+            if ('0' <= c && c <= '9') {
+                multi = 10 * multi + (c - '0');
             } else if (c == '(') {
-                // 左括号，计算之前字符串的长度
-                String[] tmp = dfs(s, i + 1);
-                String nowStr = res.toString();
-                i = Integer.parseInt(tmp[0]);
-                int nexCount = Integer.parseInt(tmp[1]);
-                // 累积数
-                if (multi == 0) {
-                    // 当前 res 和之后的字符一起连接, 需要取后面的数字
-                    wordMap.put(nowStr, wordMap.getOrDefault(nowStr, 1) * nexCount == 0 ? 1 : nexCount);
-                } else {
-                    wordMap.put(nowStr, wordMap.getOrDefault(nowStr, 1) * wordMap.get(tmp[0]));
+                if (sb.length() > 0) {
+                    wordList.add(new Word(sb.toString(), multi == 0 ? 1 : multi));
+                    sb = new StringBuilder();
+                    multi = 0;
                 }
-            } else if (c >= 'A' && c <= 'Z') {
-                // 单词连续
-                if (StringUtils.isNotBlank(res.toString())) {
-                    String[] tmp = dfs(s, i + 1);
-                    String nowStr = res.toString();
-                    i = Integer.parseInt(tmp[0]);
-                    int nexCount = Integer.parseInt(tmp[1]);
-                    // 累积数
-                    if (multi == 0) {
-                        // 当前 res 和之后的字符一起连接, 需要取后面的数字
-                        wordMap.put(nowStr, wordMap.getOrDefault(nowStr, 1) * nexCount == 0 ? 1 : nexCount);
-                    } else {
-                        wordMap.put(nowStr, wordMap.getOrDefault(nowStr, 1) * wordMap.getOrDefault(tmp[0], 1));
-                    }
-                } else {
-                    res.append(c);
+                start[0]++;
+                List<Word> dfs = dfs(s, start);
+                for (Word df : dfs) {
+                    df.in = true;
+                    wordList.add(df);
                 }
             } else if (c == ')') {
-                // Welcome4(ToAlibaba(To3)2)2
-                // 右括号结束
-                wordMap.put(res.toString(), multi == 0 ? 1 : multi);
-                return new String[]{String.valueOf(i), res.toString(), multi == 0 ? "1" : multi + ""};
+                if (sb.length() > 0) {
+                    wordList.add(new Word(sb.toString(), multi == 0 ? 1 : multi));
+                    return wordList;
+                }
+                for (Word word : wordList) {
+                    if (word.in) {
+                        word.num *= multi;
+                    }
+                }
+                return wordList;
+            } else if ('A' <= c && c <= 'Z') {
+                if (sb.length() > 0) {
+                    wordList.add(new Word(sb.toString(), multi == 0 ? 1 : multi));
+                    sb = new StringBuilder();
+                    multi = 0;
+                }
+                sb.append(c);
             } else {
-                // 小写字母
-                res.append(c);
+                sb.append(c);
             }
-            i++;
+            start[0]++;
         }
-        return new String[]{s.length() + "", "1"};
+        if (sb.length() > 0) {
+            wordList.add(new Word(sb.toString(), multi == 0 ? 1 : multi));
+            sb = new StringBuilder();
+            multi = 0;
+        }
+        if (multi > 0) {
+            for (Word word : wordList) {
+                if (word.in) {
+                    word.num *= multi;
+                }
+            }
+        }
+        return wordList;
+    }
+
+    static class Word {
+        String word;
+        int num;
+        boolean in;
+
+        public Word(String word, int num) {
+            this.word = word;
+            this.num = num;
+        }
+
+        public Word(String word, int num, boolean in) {
+            this.word = word;
+            this.num = num;
+            this.in = in;
+        }
     }
 }
