@@ -1,6 +1,6 @@
 package com.wufish.javalearning.swordoffer.ch02;
 
-import java.util.Stack;
+import java.util.*;
 
 /**
  * 用两个栈实现队列
@@ -18,6 +18,7 @@ public class Q09_01_QueueWithTwoStacks {
     private Stack<Integer> stack2 = new Stack<>();
 
     public void offer(int value) {
+        Map<Integer, Integer> map = new HashMap<>();
         stack1.push(value);
     }
 
