@@ -1,6 +1,9 @@
 package com.wufish.javalearning.alibaba;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * 2.单词统计
@@ -73,9 +76,11 @@ public class Tester2 {
                     wordList.add(new Word(sb.toString(), multi == 0 ? 1 : multi));
                     return wordList;
                 }
-                for (Word word : wordList) {
-                    if (word.in) {
-                        word.num *= multi;
+                if (multi > 1) {
+                    for (Word word : wordList) {
+                        if (word.in) {
+                            word.num *= multi;
+                        }
                     }
                 }
                 return wordList;
