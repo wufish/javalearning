@@ -23,4 +23,27 @@ package com.wufish.javalearning.alibaba;
  * // 1 <= m <= 13
  */
 public class Tester3 {
+
+    private static int count = 0;
+
+    public static void main(String[] args) {
+        //dfs(5, 8);
+        dfs(11, 13);
+        System.out.println(count);
+    }
+
+    public static void dfs(int height, int width) {
+        int min = Math.min(height, width);
+        int max = Math.max(height, width);
+        if (min <= (max / 2)) {
+            count++;
+            dfs(min, max - min);
+        }else {
+            count++;
+            if (min != max) {
+                dfs(min, max - min);
+            }
+        }
+
+    }
 }
