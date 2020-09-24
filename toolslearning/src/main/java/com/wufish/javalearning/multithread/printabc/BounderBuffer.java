@@ -20,11 +20,11 @@ public class BounderBuffer {
     private static final Object objLock = new Object();
 
     public static void main(String[] args) {
-        try {
+        /*try {
             objLock.wait();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
        /* CyclicBarrier cyclicBarrier = new CyclicBarrier(10, () -> {
             System.out.println("generation end");
         });*/
@@ -69,7 +69,7 @@ public class BounderBuffer {
                 e.printStackTrace();
             }
         }*/
-
+        Thread.currentThread().interrupt();
         CountDownLatch countDownLatch = new CountDownLatch(5);
         for (int i = 0; i < countDownLatch.getCount(); i++) {
             new Thread(new CLThread(countDownLatch), "player" + i).start();
