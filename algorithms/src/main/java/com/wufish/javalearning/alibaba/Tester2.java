@@ -23,112 +23,100 @@ import java.util.*;
  * 字符串只包含字母、数字和圆括号，并且题目中给定的都是合法的字符串。
  */
 public class Tester2 {
-    static Map<String, Integer> wordMap = new HashMap<>();
-
     public static void main(String[] args) {
-        System.out.println(getStatistic("Welcome4(ToAlibaba(To3)2)2"));
-        System.out.println(getStatistic("Welcome4(ToAlibaba(To3)2)Hello2"));
-        System.out.println(getStatistic("World3Hello"));
+        System.out.println(convert("Welcome4(ToAlibaba(To3)2)2"));
+        System.out.println(convert("Welcome4(ToAlibaba(To)2)2"));
+        System.out.println(convert("Welcome4(ToAlibaba2)2"));
+        System.out.println(convert("Welcome(ToAlibaba2(To2))2"));
+        System.out.println(convert("Welcome(ToAlibaba2(To2)3)2"));
+        System.out.println();
     }
 
-    private static String getStatistic(String s) {
-        List<Pair> dfs = dfs(s, new int[]{0});
-        TreeMap<String, Integer> map = new TreeMap<>();
-        for (Pair df : dfs) {
-            map.put(df.word, map.getOrDefault(df.word, 0) + df.num);
+    private static String convert(String s) {
+        List<Word> dfs = dfs(s, new int[]{0});
+        TreeMap<String, Integer> wordMap = new TreeMap<>();
+        for (Word df : dfs) {
+            wordMap.put(df.word, wordMap.getOrDefault(df.word, 0) + df.num);
         }
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-            sb.append(entry.getKey()).append(entry.getValue() == 1 ? "" : entry.getValue());
+        StringBuilder res = new StringBuilder();
+        for (Map.Entry<String, Integer> entry : wordMap.entrySet()) {
+            res.append(entry.getKey()).append(entry.getValue() == 1 ? "" : entry.getValue());
         }
-        return sb.toString();
+        return res.toString();
     }
 
     /**
-     * 深度遍历, 获取从当前左括号到匹配的括号之间单词的个数
-     * start 作为索引，引用传递，用于保存当前位置
-     * <p>
-     * Welcome4(ToAlibaba(To3)2)2
-     * World3Hello
+     * 字符串处理成单词列表
      */
-    private static List<Pair> dfs(String s, int[] start) {
-        int multi = 0;
+    private static List<Word> dfs(String s, int[] start) {
         StringBuilder sb = new StringBuilder();
-        List<Pair> list = new ArrayList<>();
+        List<Word> wordList = new LinkedList<>();
+        int multi = 0;
         while (start[0] < s.length()) {
             char c = s.charAt(start[0]);
             if ('0' <= c && c <= '9') {
-                // 数字
                 multi = 10 * multi + (c - '0');
             } else if (c == '(') {
                 if (sb.length() > 0) {
-                    list.add(new Pair(sb.toString(), multi == 0 ? 1 : multi));
+                    wordList.add(new Word(sb.toString(), multi == 0 ? 1 : multi));
                     sb = new StringBuilder();
                     multi = 0;
                 }
-                // 括号内键值对
                 start[0]++;
-                List<Pair> pairs = dfs(s, start);
-                for (Pair pair : pairs) {
-                    pair.in = true;
-                    list.add(pair);
+                List<Word> dfs = dfs(s, start);
+                for (Word df : dfs) {
+                    df.in = true;
+                    wordList.add(df);
                 }
             } else if (c == ')') {
-                // 数字之前存在单词
                 if (sb.length() > 0) {
-                    list.add(new Pair(sb.toString(), multi == 0 ? 1 : multi));
-                    return list;
+                    wordList.add(new Word(sb.toString(), multi == 0 ? 1 : multi));
+                    return wordList;
                 }
-                // 对数字前面的单词计数
-                if (multi != 0) {
-                    for (Pair pair : list) {
-                        if (pair.in) {
-                            pair.num *= multi;
-                        }
+                for (Word word : wordList) {
+                    if (word.in) {
+                        word.num *= multi;
                     }
                 }
-                return list;
+                return wordList;
             } else if ('A' <= c && c <= 'Z') {
-                // 大写字母
                 if (sb.length() > 0) {
-                    list.add(new Pair(sb.toString(), multi == 0 ? 1 : multi));
+                    wordList.add(new Word(sb.toString(), multi == 0 ? 1 : multi));
                     sb = new StringBuilder();
                     multi = 0;
                 }
                 sb.append(c);
             } else {
-                // 小写字母
                 sb.append(c);
             }
             start[0]++;
         }
         if (sb.length() > 0) {
-            list.add(new Pair(sb.toString(), multi == 0 ? 1 : multi));
-        } else if (multi != 0) {
-            // 最后已数字结尾
-            for (Pair pair : list) {
-                if (pair.in) {
-                    pair.num *= multi;
+            wordList.add(new Word(sb.toString(), multi == 0 ? 1 : multi));
+            sb = new StringBuilder();
+            multi = 0;
+        }
+        if (multi > 0) {
+            for (Word word : wordList) {
+                if (word.in) {
+                    word.num *= multi;
                 }
             }
         }
-        return list;
+        return wordList;
     }
 
-    private static class Pair {
-        // 单词
+    static class Word {
         String word;
-        // 单词计数
         int num;
-        // 是否在括号内
         boolean in;
 
-        public Pair(String word, int num) {
+        public Word(String word, int num) {
             this.word = word;
             this.num = num;
         }
 
-        public Pair(String word, int num, boolean in) {
+        public Word(String word, int num, boolean in) {
             this.word = word;
             this.num = num;
             this.in = in;
