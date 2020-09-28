@@ -18,7 +18,7 @@ public class LinkedSort {
         t3.next = t4;
         t4.next = t5;
         t5.next = t6;
-        ListNode sort = sort2(t1);
+        ListNode sort = sortList2(t1);
         ListNode cur = sort;
         while (cur != null) {
             System.out.println(cur.val);
@@ -27,7 +27,7 @@ public class LinkedSort {
         System.out.println();
     }
 
-    private static ListNode sort(ListNode head) {
+    private static ListNode sortList3(ListNode head) {
         if (head == null || head.next == null) return head;
         int length = 0;
         ListNode cur = head;
@@ -84,7 +84,7 @@ public class LinkedSort {
         return dummy.next;
     }
 
-    private static ListNode sort2(ListNode head) {
+    private static ListNode sortList2(ListNode head) {
         if (head == null || head.next == null) return head;
         int length = 0;
         ListNode cur = head;
@@ -156,6 +156,45 @@ public class LinkedSort {
             right.next = merge(left, right.next);
             return right;
         }
+    }
+
+    public static SortAlgorithm.ListNode sortList(SortAlgorithm.ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        SortAlgorithm.ListNode mid = findMidNode(head);
+        SortAlgorithm.ListNode rightHead = mid.next;
+        // 断开链表
+        mid.next = null;
+        SortAlgorithm.ListNode left = sortList(head);
+        SortAlgorithm.ListNode right = sortList(rightHead);
+        return merge(left, right);
+    }
+
+    private static SortAlgorithm.ListNode findMidNode(SortAlgorithm.ListNode node) {
+        if (node == null) return null;
+        SortAlgorithm.ListNode fast = node.next, slow = node;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    private static SortAlgorithm.ListNode merge(SortAlgorithm.ListNode left, SortAlgorithm.ListNode right) {
+        SortAlgorithm.ListNode dummy = new SortAlgorithm.ListNode(-1);
+        SortAlgorithm.ListNode curr = dummy;
+        while (left != null && right != null) {
+            if (left.val < right.val) {
+                curr.next = left;
+                left = left.next;
+            } else {
+                curr.next = right;
+                right = right.next;
+            }
+            curr = curr.next;
+        }
+        curr.next = left != null ? left : right;
+        return dummy.next;
     }
 
     private static class ListNode {
