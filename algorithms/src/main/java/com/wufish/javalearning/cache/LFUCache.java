@@ -1,4 +1,4 @@
-package com.wufish.javalearning.swap;
+package com.wufish.javalearning.cache;
 
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;

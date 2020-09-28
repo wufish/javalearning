@@ -1,4 +1,4 @@
-package com.wufish.javalearning;
+package com.wufish.javalearning.sort;
 
 import java.util.Arrays;
 
