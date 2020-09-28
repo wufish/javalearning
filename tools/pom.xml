@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>toolslearning</artifactId>
+    <artifactId>tools</artifactId>
 
     <dependencies>
         <!-- 熔断框架-->
