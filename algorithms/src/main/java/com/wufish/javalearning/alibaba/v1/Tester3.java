@@ -1,4 +1,4 @@
-package com.wufish.javalearning.alibaba;
+package com.wufish.javalearning.alibaba.v1;
 
 /**
  * // 3. 题目：贴墙纸

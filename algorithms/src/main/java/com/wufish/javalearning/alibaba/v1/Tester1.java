@@ -1,4 +1,4 @@
-package com.wufish.javalearning.alibaba;
+package com.wufish.javalearning.alibaba.v1;
 
 import org.apache.commons.lang3.StringUtils;
 

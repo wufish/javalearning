@@ -1,5 +1,6 @@
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -51,6 +52,21 @@ public class MyTester {
     @Test
     public void test() {
         List<List<Integer>> lists = permuteUnique(new int[]{1, 1, 2});
+        List<? extends Fruit> pe = new ArrayList<>();
+        //Fruit fruit = pe.get(0);
+        //pe.add(new Fruit());
+        //pe.add(new Apple());
+
+        List<? super Apple> cs = new ArrayList<>();
+        //Object object = cs.get(0);
+        cs.add(new Apple());
+        cs.add(new RedApple());
+        //cs.add(new Fruit());
+        BigDecimal bigDecimal = new BigDecimal("10.2345");
+        double t = Math.log(6000000)/Math.log(2);
         System.out.println();
     }
+    public class Fruit {}
+    public class Apple extends Fruit {}
+    public class RedApple extends Apple {}
 }

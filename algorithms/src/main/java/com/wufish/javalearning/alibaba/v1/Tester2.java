@@ -1,4 +1,4 @@
-package com.wufish.javalearning.alibaba;
+package com.wufish.javalearning.alibaba.v1;
 
 import java.util.LinkedList;
 import java.util.List;
