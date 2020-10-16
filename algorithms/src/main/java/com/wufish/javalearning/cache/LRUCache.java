@@ -7,7 +7,7 @@ import java.util.Map;
  * The type Lru cache.
  *
  * @param <K> the type parameter
- * @Author 58
+ * @Author wufish
  * @Create time : 2020-03-17 20:00
  * @Description: desc \r\n
  * <p>

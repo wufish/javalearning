@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * The type Lfu cache.
  *
  * @param <K> the type parameter
- * @Author 58
+ * @Author wufish
  * @Create time : 2020-03-17 18:24
  * @Description: put 操作： get 操作： evict操作：remove
  */

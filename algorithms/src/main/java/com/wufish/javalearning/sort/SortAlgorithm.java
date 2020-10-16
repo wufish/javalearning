@@ -3,7 +3,7 @@ package com.wufish.javalearning.sort;
 import java.util.Arrays;
 
 /**
- * @Author wzj@58ganji.com
+ * @Author wufish
  * @Create time: 2020/7/16 0016
  * @Description: 八种排序算法的思想、实现以及复杂度。
  */

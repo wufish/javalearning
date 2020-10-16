@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * @Author wzj@58ganji.com
+ * @Author wufish
  * @Create time: 2020/9/18 0018
  * @Description:
  */
