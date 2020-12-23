@@ -1,4 +1,4 @@
-package com.ufish.javalearning.test;
+package com.wufish.javalearning.test;
 
 import java.util.HashMap;
 import java.util.List;

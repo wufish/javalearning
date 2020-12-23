@@ -1,14 +1,24 @@
-package com.ufish.javalearning;
+package com.wufish.javalearning;
 
-import com.google.common.util.concurrent.*;
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.concurrent.Executors;
+import java.util.concurrent.locks.LockSupport;
+import java.util.stream.IntStream;
+
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.Before;
 import org.junit.Test;
-import sun.misc.Unsafe;
 
-import java.lang.reflect.Field;
-import java.util.concurrent.Executors;
-import java.util.concurrent.locks.LockSupport;
+import com.google.common.util.concurrent.FutureCallback;
+import com.google.common.util.concurrent.Futures;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
+
+import sun.misc.Unsafe;
 
 /**
  * The type Tester.
@@ -23,6 +33,7 @@ public class Tester {
     private static long SEED;
     private static long PROBE;
     private static long SECONDARY;
+    private static final DateTimeFormatter DEFAULT_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
 
     private static void park(Object blocker) {
         Thread t = Thread.currentThread();
@@ -82,14 +93,14 @@ public class Tester {
      */
     @Test
     public void test() throws NoSuchFieldException, IllegalAccessException {
-        /*MyTestVO myTestVO = new MyTestVO();
-        Supplier<Stream<String>> stringStream = () -> Stream.of("d2", "a2", "b1", "b3", "c", null)
-                .filter(s -> s.startsWith("a"));
-        stringStream.get().forEach(System.out::println);*/
-        int[] arr = new int[]{1, 2, 3, 4, 5, 6};
-
-        int i = UNSAFE.arrayBaseOffset(int[].class);
-        int i1 = UNSAFE.arrayIndexScale(int[].class);
+       /* UserClass userClass = new UserClass();
+        userClass.print();
+        ClassUtils.getFieldsValue(userClass);*/
+        IntStream.range(0, 10).forEach(x -> System.out.println(x));
+        String format = LocalDateTime.now()
+                .plusMinutes(30).withMinute(0).withSecond(0)
+                .atZone(ZoneId.systemDefault())
+                .format(DEFAULT_DATE_TIME_FORMATTER);
         System.out.println();
     }
 
