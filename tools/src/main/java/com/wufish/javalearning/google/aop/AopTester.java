@@ -1,6 +1,8 @@
 package com.wufish.javalearning.google.aop;
 
-import com.google.inject.*;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.name.Names;
 
@@ -28,14 +30,11 @@ public class AopTester {
         injector.getInstance(AopTester.class).service.sayHello();
         injector.getInstance(AopTester.class).service.sayHello();*/
 
-        Injector injector = Guice.createInjector(new Module() {
-            @Override
-            public void configure(Binder binder) {
-                AfterMethodIntercepter after = new AfterMethodIntercepter();
-                binder.requestInjection(after);
-                // 第一个参数是匹配类，第二个参数是匹配方法，第三个数组参数是方法拦截器
-                binder.bindInterceptor(Matchers.any(), Matchers.annotatedWith(Names.named("log")), after);
-            }
+        Injector injector = Guice.createInjector(binder -> {
+            AfterMethodIntercepter after = new AfterMethodIntercepter();
+            binder.requestInjection(after);
+            // 第一个参数是匹配类，第二个参数是匹配方法，第三个数组参数是方法拦截器
+            binder.bindInterceptor(Matchers.any(), Matchers.annotatedWith(Names.named("log")), after);
         });
         injector.getInstance(AopTester.class).service.sayHello();
     }

@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import javax.cache.Caching;
-import javax.xml.ws.WebServiceException;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -173,7 +172,7 @@ public class UsageGudide {
                 .retryOnResult(StringUtils::isBlank) // 根据返回结果，判断是否重试
                 .retryOnException(throwable ->
                         Match(throwable).of(
-                                Case($(Predicates.instanceOf(WebServiceException.class)), true),
+                                Case($(Predicates.instanceOf(Exception.class)), true),
                                 Case($(), false))
                 ) // 根据异常匹配结果，是否需要重试，默认为 null
                 .retryExceptions(new Class[]{}) // 需要重试的异常数组，默认为空
@@ -412,10 +411,10 @@ public class UsageGudide {
                 .ignoreExceptions() // 需要忽略的异常，不会判定为失败，默认空
                 // 默认所有异常都被认定为失败事件，你可以定制Predicate的test检查，实现选择性记录，只有该函数返回为true时异常才被认定为失败事件。
                 .recordException(throwable -> Match(throwable).of(
-                        Case($(instanceOf(WebServiceException.class)), true),
+                        Case($(instanceOf(Exception.class)), true),
                         Case($(), false)))
                 .ignoreException(throwable -> Match(throwable).of(
-                        Case($(instanceOf(WebServiceException.class)), true),
+                        Case($(instanceOf(Exception.class)), true),
                         Case($(), false)))
                 .build();
         CircuitBreakerRegistry circuitBreakerRegistry2 = CircuitBreakerRegistry.of(circuitBreakerConfig);
@@ -484,7 +483,7 @@ public class UsageGudide {
                 .ringBufferSizeInHalfOpenState(2)
                 .waitDurationInOpenState(Duration.ofMillis(1000))
                 .recordFailure(throwable -> Match(throwable).of(
-                        Case($(Predicates.instanceOf(WebServiceException.class)), true),
+                        Case($(Predicates.instanceOf(Exception.class)), true),
                         Case($(), false)))
                 .build();
 
@@ -527,10 +526,10 @@ public class UsageGudide {
                 .ignoreExceptions() // 需要忽略的异常，不会判定为失败，默认空
                 // 默认所有异常都被认定为失败事件，你可以定制Predicate的test检查，实现选择性记录，只有该函数返回为true时异常才被认定为失败事件。
                 .recordException(throwable -> Match(throwable).of(
-                        Case($(instanceOf(WebServiceException.class)), true),
+                        Case($(instanceOf(Exception.class)), true),
                         Case($(), false)))
                 .ignoreException(throwable -> Match(throwable).of(
-                        Case($(instanceOf(WebServiceException.class)), true),
+                        Case($(instanceOf(Exception.class)), true),
                         Case($(), false)))
                 .build();
 

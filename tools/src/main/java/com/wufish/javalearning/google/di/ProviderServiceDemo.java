@@ -1,6 +1,8 @@
 package com.wufish.javalearning.google.di;
 
-import com.google.inject.*;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.wufish.javalearning.google.di.providers.OneServiceProvider;
 import com.wufish.javalearning.google.di.service.IService;
 
@@ -28,12 +30,7 @@ public class ProviderServiceDemo {
     private Provider<IService> provider;
 
     public static void main(String[] args) {
-        ProviderServiceDemo instance = Guice.createInjector(new Module() {
-            @Override
-            public void configure(Binder binder) {
-                binder.bind(IService.class).toProvider(OneServiceProvider.class);
-            }
-        }).getInstance(ProviderServiceDemo.class);
+        ProviderServiceDemo instance = Guice.createInjector(binder -> binder.bind(IService.class).toProvider(OneServiceProvider.class)).getInstance(ProviderServiceDemo.class);
         instance.provider.get().execute();
     }
 }
