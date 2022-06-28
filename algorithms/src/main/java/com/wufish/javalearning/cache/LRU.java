@@ -1,8 +1,7 @@
 package com.wufish.javalearning.cache;
 
-import com.sun.org.apache.xpath.internal.operations.String;
-
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author wufish

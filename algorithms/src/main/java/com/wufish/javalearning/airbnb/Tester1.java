@@ -1,9 +1,9 @@
 package com.wufish.javalearning.airbnb;
 
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.Stack;
+
+import com.google.common.collect.Lists;
 
 /**
  * @Author wzj
@@ -75,7 +75,7 @@ public class Tester1 {
                     return String.format("start tag miss %s", tag);
                 }
             }
-            if(i == len - 1 && '>' == c && !leftStart){
+            if(i == len - 1 && '>' == c){
                 // 最后一个是>
                 return "parser error";
             }
