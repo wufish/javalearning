@@ -1,4 +1,4 @@
-package com.wufish.javalearning;
+package com.wufish.javalearning.test;
 
 import static java.util.stream.Collectors.joining;
 

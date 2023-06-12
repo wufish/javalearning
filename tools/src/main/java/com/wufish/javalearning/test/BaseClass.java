@@ -1,4 +1,4 @@
-package com.wufish.javalearning;
+package com.wufish.javalearning.test;
 
 /**
  * Created on 2020-12-05
