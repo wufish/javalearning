@@ -1,35 +1,5 @@
 package com.wufish.javalearning.test;
 
-import static java.util.stream.Collectors.joining;
-
-import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.IntStream;
-
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.google.common.collect.Lists;
-import com.google.common.util.concurrent.FutureCallback;
-import com.google.common.util.concurrent.Futures;
-import com.google.common.util.concurrent.ListenableFuture;
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
-
-import sun.misc.Unsafe;
-
 /**
  * The type Tester.
  *
@@ -38,7 +8,7 @@ import sun.misc.Unsafe;
  * @Description:
  */
 public class Tester {
-    private static final DateTimeFormatter DEFAULT_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
+    /*private static final DateTimeFormatter DEFAULT_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
     private static sun.misc.Unsafe UNSAFE;
     private static long parkBlockerOffset;
     private static long SEED;
@@ -62,7 +32,6 @@ public class Tester {
         UNSAFE.putObject(t, parkBlockerOffset, arg);
     }
 
-    @Before
     public void init() throws NoSuchFieldException, IllegalAccessException {
         Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
         theUnsafe.setAccessible(true);
@@ -97,15 +66,14 @@ public class Tester {
         }, Executors.newFixedThreadPool(2));
     }
 
-    /**
+    *//**
      * Test.
      * {@literal}
-     */
-    @Test
+     *//*
     public void test() throws NoSuchFieldException, IllegalAccessException {
-       /* UserClass userClass = new UserClass();
+       *//* UserClass userClass = new UserClass();
         userClass.print();
-        ClassUtils.getFieldsValue(userClass);*/
+        ClassUtils.getFieldsValue(userClass);*//*
         //IntStream.range(0, 10).forEach(x -> System.out.println(x));
         String format = LocalDateTime.now()
                 .plusMinutes(30).withMinute(0).withSecond(0)
@@ -132,9 +100,8 @@ public class Tester {
         System.out.println();
     }
 
-    @Test
     public void parkTest() throws InterruptedException {
-        /*Thread thread = new Thread(() -> {
+        *//*Thread thread = new Thread(() -> {
             for (int i = 0; i < 100000; i++) {
                 System.out.println("out : " + i);
                 LockSupport.park();
@@ -147,7 +114,7 @@ public class Tester {
 
         while (true) {
             LockSupport.unpark(thread);
-        }*/
+        }*//*
         CompletableFuture[] futures = IntStream.range(0, 10)
                 .mapToObj(i -> CompletableFuture.runAsync(() -> {
                             System.out.println(i + "start");
@@ -168,5 +135,5 @@ public class Tester {
                 ).toArray(CompletableFuture[]::new);
         CompletableFuture.allOf(futures).join();
         //System.out.println("end");
-    }
+    }*/
 }
