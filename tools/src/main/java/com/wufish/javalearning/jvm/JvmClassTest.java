@@ -3,7 +3,9 @@ package com.wufish.javalearning.jvm;
 /**
  * Created on 2023-06-12
  */
-public class JvmClassTest {
+public class JvmClassTest extends JvmClassAnalyze implements JvmClassPrint {
+    private static final int child = 99;
+
     public static void main(String[] args) {
         Human man = new Man();
         Human woman = new Woman();
@@ -15,7 +17,8 @@ public class JvmClassTest {
         woman.sayHello(); // Hello, woman
         //
         int res = tester.func(1, 2);
-        System.out.println(res);
+        tester.printJvm();
+        System.out.println();
     }
 
     public int func(int x, int y) {
@@ -28,35 +31,8 @@ public class JvmClassTest {
         return z + a + b;
     }
 
-    public void sayHello(Human human) {
-        System.out.println("Hello, human");
-    }
-
-    public void sayHello(Man man) {
-        System.out.println("Hello, man");
-    }
-
-    public void sayHello(Woman man) {
-        System.out.println("Hello, woman");
-    }
-
-    interface Human {
-        default void sayHello() {
-            System.out.println("Hello, human");
-        }
-    }
-
-    static class Man implements Human {
-        @Override
-        public void sayHello() {
-            System.out.println("Hello, man");
-        }
-    }
-
-    static class Woman implements Human {
-        @Override
-        public void sayHello() {
-            System.out.println("Hello, woman");
-        }
+    @Override
+    public void printJvm() {
+        System.out.println("print jvm");
     }
 }
