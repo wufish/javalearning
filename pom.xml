@@ -26,7 +26,23 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <spring-boot.version>3.1.4</spring-boot.version>
+
+        <wufish.spring-boot.version>3.1.4</wufish.spring-boot.version>
+        <wufish.redission.version>3.23.5</wufish.redission.version>
+        <wufish.jol.version>0.17</wufish.jol.version>
+        <wufish.vavr.version>0.10.4</wufish.vavr.version>
+        <wufish.resilience4j.version>1.6.1</wufish.resilience4j.version>
+        <wufish.hutool.version>5.8.18</wufish.hutool.version>
+        <wufish.netty.version>4.1.90.Final</wufish.netty.version>
+        <wufish.kafka.version>3.4.0</wufish.kafka.version>
+        <wufish.log4j.version>2.20.0</wufish.log4j.version>
+        <wufish.jedis.version>5.0.0-alpha2</wufish.jedis.version>
+        <wufish.guice.version>5.1.0</wufish.guice.version>
+        <wufish.guava.version>31.1-jre</wufish.guava.version>
+        <wufish.fastjson.version>2.0.32</wufish.fastjson.version>
+        <wufish.lombck.version>1.18.26</wufish.lombck.version>
+        <wufish.mockito.version>2.0.2-beta</wufish.mockito.version>
+        <wufish.protostuff.version>1.8.0</wufish.protostuff.version>
     </properties>
 
     <profiles>
