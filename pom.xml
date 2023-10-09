@@ -7,6 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
+<!--        <version>2.1.9.RELEASE</version>-->
         <version>3.1.4</version>
         <relativePath/>
     </parent>
@@ -27,7 +28,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
 
-        <wufish.spring-boot.version>3.1.4</wufish.spring-boot.version>
         <wufish.redission.version>3.23.5</wufish.redission.version>
         <wufish.jol.version>0.17</wufish.jol.version>
         <wufish.vavr.version>0.10.4</wufish.vavr.version>
