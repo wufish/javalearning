@@ -1,8 +1,3 @@
-import com.google.common.collect.Lists;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-
-import java.util.Properties;
 import java.util.Stack;
 
 /**
@@ -27,9 +22,6 @@ public class Tester {
         };
         Tester tester = new Tester();
         int i1 = tester.minEatingSpeed(new int[]{3, 6, 7, 11}, 8);
-        KafkaConsumer kafkaConsumer = new KafkaConsumer<>(new Properties());
-        kafkaConsumer.subscribe(Lists.newArrayList());
-        ConsumerRecords poll = kafkaConsumer.poll(100);
         System.out.println();
     }
 
