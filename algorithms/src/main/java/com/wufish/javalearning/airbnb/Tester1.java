@@ -1,9 +1,6 @@
 package com.wufish.javalearning.airbnb;
 
-import java.util.ArrayList;
 import java.util.Stack;
-
-import com.google.common.collect.Lists;
 
 /**
  * @Author wzj
@@ -12,16 +9,14 @@ import com.google.common.collect.Lists;
  */
 public class Tester1 {
     public static void main(String[] args) {
-        ArrayList<String> xmls = Lists.newArrayList(
-                "abc",
+        String[] xmls = {"abc",
                 "abc<a></a>",
                 "abc<a></>",
                 "abc<a></b>",
                 "abc<b></a>",
                 "abc<a></a><b></b>",
                 "abc<b><a>",
-                "abc<b>a>"
-        );
+                "abc<b>a>"};
         for (String xml : xmls) {
             System.out.println(xmlValid(xml));
         }

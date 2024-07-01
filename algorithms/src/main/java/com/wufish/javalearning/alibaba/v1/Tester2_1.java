@@ -1,7 +1,5 @@
 package com.wufish.javalearning.alibaba.v1;
 
-import lombok.ToString;
-
 import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
@@ -113,7 +111,6 @@ public class Tester2_1 {
         return new Word(temp, num, end - start);
     }
 
-    @ToString
     private static class Word {
         String value;
         int num;
@@ -123,6 +120,11 @@ public class Tester2_1 {
             this.value = value;
             this.num = num;
             this.len = len;
+        }
+
+        @Override
+        public String toString() {
+            return value + " " + num + " " + len;
         }
     }
 }

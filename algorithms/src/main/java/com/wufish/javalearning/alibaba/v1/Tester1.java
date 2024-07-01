@@ -1,7 +1,5 @@
 package com.wufish.javalearning.alibaba.v1;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
@@ -100,7 +98,7 @@ public class Tester1 {
         class ThreadA extends Thread {
             @Override
             public void run() {
-                if (StringUtils.isNotBlank(a)) {
+                if (a != null) {
                     try {
                         // 线程 A 获取锁
                         lock.lock();
@@ -134,7 +132,7 @@ public class Tester1 {
         class ThreadB extends Thread {
             @Override
             public void run() {
-                if (StringUtils.isNotBlank(b)) {
+                if (b != null) {
                     try {
                         lock.lock();
                         // 遍历字符串 b，如果当前 size 是奇数（保证顺序），

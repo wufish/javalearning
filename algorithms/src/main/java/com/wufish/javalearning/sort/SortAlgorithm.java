@@ -13,7 +13,7 @@ public class SortAlgorithm {
         //bubbleSort(nums);
         //quickSort(nums, 0, nums.length - 1);
         //insertSort(nums);
-        //shellSort(nums);
+        shellSort(nums);
         //selectSort(nums);
         heapSort(nums);
         mergeSort(nums);
@@ -44,7 +44,7 @@ public class SortAlgorithm {
     public static void bubbleSort(int[] nums) {
         int n = nums.length;
         // 是否有数据改变
-        boolean exchange = false;
+        boolean exchange;
         // 要遍历的次数
         for (int i = 0; i < n - 1; i++) {
             exchange = false;
@@ -65,7 +65,7 @@ public class SortAlgorithm {
     }
 
     /**
-     * 2.快速排序:
+     * 2.快速排序: 一个数，一次遍历，左右反复横跳，然后一分为二继续
      * 交换排序，采用分治算法
      * 1. 通过一趟排序将要排序的数据分割成独立的两部分：分割点左边都是比它小的数，右边都是比它大的数。
      * 2. 然后再按此方法对这两部分数据分别进行快速排序，整个排序过程可以递归进行，以此达到整个数据变成有序序列。
@@ -76,7 +76,8 @@ public class SortAlgorithm {
      * <p>
      * <p>
      * 算法分析：
-     * 时间复杂度：O(n*logn), 最坏O(n^2), 最好O(n*logn)
+     * 时间复杂度：O(n*logn), 最坏O(n^2), 最好O(n*logn)。最好是顺序，最坏 逆序
+     * 平均情况，T(n)=T(n/2)+O(n)，平均复杂度O(nlogn)。
      * 空间复杂度：O(logn)，可以看成二叉树的节点
      * 稳定性：不稳定，相等元素可能会因为分区而交换顺序，所以它是不稳定的算法。
      * 复杂度：复杂
@@ -128,10 +129,10 @@ public class SortAlgorithm {
     }
 
     /**
-     * 3. 直接插入排序：一种最简单的插入排序。
+     * 3. 直接插入排序：一种最简单的插入排序。会打牌吗？
      * 插入排序：每一趟将一个待排序的记录，按照其关键字的大小插入到有序队列的合适位置里，知道全部插入完成。
      * <p>
-     * 思考：类似摸排，每摸一张，根据当前已排序，从右往左比较数据 。将ni，插入前i已经排好序的数据中
+     * 思考：类似摸牌，每摸一张，根据当前已排序，从右往左比较数据 。将ni，插入前i已经排好序的数据中
      * <p>
      * 算法分析
      * 时间复杂度：平均O(n^2), 最好O(n), 最坏O(n^2)
@@ -161,6 +162,7 @@ public class SortAlgorithm {
 
     /**
      * 4. 希尔(Shell)排序又称为缩小增量排序，它是一种插入排序。它是直接插入排序算法的一种威力加强版。
+     * 平分多个组，一组一组地第一个元素打牌插入。
      * 步骤：
      * 1. 把记录按步长 gap 分组，对每组记录采用直接插入排序方法进行排序。
      * 2. 随着步长逐渐减小，所分成的组包含的记录越来越多，当步长的值减小到 1 时，整个数据合成为一组，构成一组有序记录，则完成排序。
@@ -200,7 +202,7 @@ public class SortAlgorithm {
     }
 
     /**
-     * 5. 简单选择排序：
+     * 5. 简单选择排序：和冒泡差不多，但是冒泡是两两比较，选择排序是选择一个最小的，然后和第一个交换。
      * <p>
      * 选择排序：每趟从待排序的记录中选出关键字最小的记录，顺序放在已排序的记录序列末尾，直到全部排序结束为止。
      * 步骤：
