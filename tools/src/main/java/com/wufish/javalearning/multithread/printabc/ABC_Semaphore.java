@@ -15,54 +15,26 @@ public class ABC_Semaphore {
     private static Semaphore semaphoreB = new Semaphore(0);
     private static Semaphore semaphoreC = new Semaphore(0);
 
-    static class ThreadA extends Thread {
-        @Override
-        public void run() {
-            try {
-                for (int i = 0; i < 10; i++) {
-                    semaphoreA.acquire();
-                    System.out.print("A");
-                    semaphoreB.release();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    private static void print(int flag, Semaphore current, Semaphore next) {
+        try {
+            for (int i = 0; i < 10; i++) {
+                current.acquire();
+                printFlag(flag);
+                next.release();
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
-    static class ThreadB extends Thread {
-        @Override
-        public void run() {
-            try {
-                for (int i = 0; i < 10; i++) {
-                    semaphoreB.acquire();
-                    System.out.print("B");
-                    semaphoreC.release();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    static class ThreadC extends Thread {
-        @Override
-        public void run() {
-            try {
-                for (int i = 0; i < 10; i++) {
-                    semaphoreC.acquire();
-                    System.out.print("C");
-                    semaphoreA.release();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    private static void printFlag(int flag) {
+        String str = flag == 0 ? "A" : flag == 1 ? "B" : "C";
+        System.out.println(str);
     }
 
     public static void main(String[] args) {
-        new ThreadA().start();
-        new ThreadB().start();
-        new ThreadC().start();
+        new Thread(() -> print(0, semaphoreA, semaphoreB)).start();
+        new Thread(() -> print(1, semaphoreB, semaphoreC)).start();
+        new Thread(() -> print(2, semaphoreC, semaphoreA)).start();
     }
 }

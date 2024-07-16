@@ -14,75 +14,34 @@ public class ABC_Condition {
     private static Condition conditionA = lock.newCondition();
     private static Condition conditionB = lock.newCondition();
     private static Condition conditionC = lock.newCondition();
-
     private static int count = 0;
 
-    static class ThreadA extends Thread {
-        @Override
-        public void run() {
-            try {
-                lock.lock();
-                for (int i = 0; i < 10; i++) {
-                    while (count % 3 != 0) {
-                        conditionA.await();
-                    }
-                    System.out.print("A");
-                    count++;
-                    conditionB.signal();
+    private static void print(int flag, Condition current, Condition next) {
+        try {
+            lock.lock();
+            for (int i = 0; i < 10; i++) {
+                while (count % 3 != flag) {
+                    current.await();
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                lock.unlock();
+                printFlag(flag);
+                count++;
+                next.signal();
             }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            lock.unlock();
         }
     }
 
-    static class ThreadB extends Thread {
-        @Override
-        public void run() {
-            try {
-                lock.lock();
-                for (int i = 0; i < 10; i++) {
-                    while (count % 3 != 1) {
-                        conditionB.await();
-                    }
-                    System.out.print("B");
-                    count++;
-                    conditionC.signal();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                lock.unlock();
-            }
-        }
-    }
-
-    static class ThreadC extends Thread {
-        @Override
-        public void run() {
-            try {
-                lock.lock();
-                for (int i = 0; i < 10; i++) {
-                    while (count % 3 != 2) {
-                        conditionC.await();
-                    }
-                    System.out.print("C");
-                    count++;
-                    conditionA.signal();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                lock.unlock();
-            }
-        }
+    private static void printFlag(int flag) {
+        String str = flag == 0 ? "A" : flag == 1 ? "B" : "C";
+        System.out.println(str);
     }
 
     public static void main(String[] args) {
-        new ThreadA().start();
-        new ThreadB().start();
-        new ThreadC().start();
+        new Thread(() -> print(0, conditionA, conditionB)).start();
+        new Thread(() -> print(1, conditionB, conditionC)).start();
+        new Thread(() -> print(2, conditionC, conditionA)).start();
     }
 }
